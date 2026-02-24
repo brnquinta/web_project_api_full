@@ -21,7 +21,10 @@ backend/dist
 
 # Env
 backend/.env
-frontend/.env
+frontend/.env 
+node_modules/
+.env
+dist/
 
 # OS/IDE
 .DS_Store
