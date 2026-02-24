@@ -1,3 +1,5 @@
+
+
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -68,6 +70,8 @@ class Api {
     }).then((result) => this._handleServerResponse(result));
   }
 }
+
+console.log("API URL:", import.meta.env.VITE_API_URL);
 
 const api = new Api({
   baseUrl: import.meta.env.VITE_API_URL,
