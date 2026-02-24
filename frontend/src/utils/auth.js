@@ -24,7 +24,7 @@ class AuthApi {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, name: "User", about: "About" }),
     }).then((res) => this._handleServerResponse(res));
   }
 
@@ -32,7 +32,7 @@ class AuthApi {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, name: "User", about: "About" }),
     }).then((res) => this._handleServerResponse(res));
   }
 
