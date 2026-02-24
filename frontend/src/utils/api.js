@@ -70,7 +70,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://web-project-api-full-nu0v.onrender.com",
+  baseUrl: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,3 +1,7 @@
+//import env
+const baseUrl = import.meta.env.VITE_API_URL;
+
+
 // estilos globais
 import "../index.css";
 

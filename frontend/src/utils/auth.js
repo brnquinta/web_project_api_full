@@ -48,7 +48,7 @@ class AuthApi {
 }
 
 const auth = new AuthApi({
-  baseUrl: "https://se-register-api.en.tripleten-services.com/v1",
+  baseUrl: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
