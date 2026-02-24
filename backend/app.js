@@ -24,7 +24,7 @@ app.use(express.json());
 /* registro de log */
 app.use(requestLogger);
 
-/* CORS (TEM QUE VIR ANTES DAS ROTAS E ANTES DO AUTH) */
+/* CORS (antes das rotas e antes do auth) */
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
@@ -40,8 +40,13 @@ app.use(
   })
 );
 
-// responde preflight
-app.options("/(.*)", cors());
+/* Preflight global (sem app.options wildcard) */
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 /* Conexão BD */
 mongoose
@@ -70,7 +75,7 @@ app.use((req, res, next) => {
 
 /* Validadores / erros */
 app.use(errors());
-app.use(errorLogger); // Registro de erros
+app.use(errorLogger);
 app.use(errorMiddleware);
 
 /* Start */
