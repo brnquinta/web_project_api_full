@@ -20,7 +20,8 @@ frontend/build
 backend/dist
 
 # Env
-.env
+backend/.env
+frontend/.env
 
 # OS/IDE
 .DS_Store
