@@ -1,0 +1,40 @@
+.register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register__signin-link {
+  color: white;
+  text-decoration: none;
+  margin-top: 15px;
+  font-family: Inter, sans-serif;
+}
+
+.register__signin-link:hover {
+  opacity: 60%;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login__signup-link {
+  color: white;
+  text-decoration: none;
+  margin-top: 15px;
+  font-family: Inter, sans-serif;
+}
+
+.login__signup-link:hover {
+  opacity: 60%;
+}
+
+@media screen and (max-width: 544px) {
+  .register__signin-link {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,78 @@
+.header {
+  width: 100%;
+}
+
+/* Container do header */
+.header__content {
+  max-width: 880px;
+  margin: 0 auto 40px auto;
+  padding: 45px 16px 41px;
+  display: flex;
+  align-items: center;            /* 🔥 centraliza verticalmente */
+  border-bottom: 1px solid #545454;
+  box-sizing: border-box;
+}
+
+/* Logo */
+.header__logo {
+  max-width: 173px;
+  display: block;
+}
+
+/* Área direita do header (serve para div e ul) */
+.header__nav {
+  margin-left: auto;              /* 🔥 empurra para o canto direito */
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Quando for UL, tira estilos padrão */
+.header__nav_list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Email */
+.header__email {
+  color: #fff;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* Links */
+.header__link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.header__link_signout {
+  color: #a9a9a9;
+}
+
+.header__link:hover {
+  opacity: 0.6;
+}
+
+/* Mobile */
+@media screen and (max-width: 320px) {
+  .header__content {
+    max-width: 320px;
+    padding: 28px 16px;
+    margin-bottom: 42px;
+  }
+
+  .header__logo {
+    max-width: 126px;
+  }
+
+  .header__email,
+  .header__link {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

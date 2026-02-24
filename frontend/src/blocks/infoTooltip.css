@@ -1,0 +1,25 @@
+.info-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  padding: 10px 0 0; /* dá respiro abaixo do title do Popup */
+}
+
+.info-tooltip__icon {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.info-tooltip__message {
+  margin: 0;
+  max-width: 350px;
+
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  color: #000;
+}

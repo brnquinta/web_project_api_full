@@ -1,0 +1,250 @@
+.form  {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.form__container {
+  display: flex;
+  width: auto;
+  height: auto;
+  position: fixed;
+  justify-self: center;
+  align-self: center;
+  flex-direction: column;
+}
+
+.confirm-popup__content {
+  display: flex;
+  width: auto;
+  height: auto;
+  position: fixed;
+  justify-self: center;
+  align-self: center;
+  flex-direction: column;
+}
+
+.form__content {
+  max-width: 430px;
+  max-height: 330px;
+  width: 430px;
+  background-color: white;
+  border-radius: 20px;
+  z-index: 999;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.confirm-popup__container {
+  position: relative;
+  max-width: 430px;
+  max-height: 181px;
+  width: 430px;
+  height: 181px;
+  background-color: white;
+  border-radius: 20px;
+  z-index: 999;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+.confirm-popup__close-button {
+  position: absolute;
+  max-width: 40px;
+  max-height: 40px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  cursor: pointer;
+  top: -40px;
+  right: -40px;
+  justify-self: center;
+}
+
+.confirm-popup__title {
+  margin: 34px 64px 38px 36px;
+  font-family: Inter, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+
+.form__title {
+  margin: 34px 64px 54px 36px;
+  font-family: Inter, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form__input-wrapper {
+  margin: 0 0 30px 0;
+}
+.form__item {
+  width: 358px;
+  height: 27.26px;
+  max-width: 358px;
+  max-height: 27.26px;
+
+  border: 0;
+  border-bottom: 1px solid black;
+  margin: 0 0 0 0;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+.form__validation {
+  position: absolute;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: red;
+  margin-top: 5px;
+}
+
+.form__item:focus {
+  outline: none;
+}
+
+.form__item::placeholder {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+
+.form__item--valid {
+  border-bottom: 1px solid green;
+}
+
+.form__item--invalid {
+  border-bottom: 1px solid red;
+}
+
+.form__button-submit {
+  width: 358px;
+  height: 50.15px;
+  max-width: 358px;
+  max-height: 50.15px;
+  margin: 0 0 36px 0;
+  justify-self: center;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+}
+
+.confirmation-popup__button {
+  width: 358px;
+  height: 50.15px;
+  max-width: 358px;
+  max-height: 50.15px;
+  margin: 0 auto 0 auto;
+  justify-self: center;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+}
+
+.form__button-submit--invalid {
+  opacity: 20%;
+}
+
+.form__button-submit:hover {
+  opacity: 80%;
+}
+
+.form__close-button {
+  position: relative;
+  max-width: 40px;
+  max-height: 40px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  cursor: pointer;
+  align-self: flex-end;
+  right: -40px;
+}
+
+.form__close-icon {
+  margin: 0;
+  justify-self: center;
+  align-self: center;
+}
+
+.form__items {
+  justify-self: center;
+  align-self: center;
+}
+
+@media screen and (max-width: 320px) {
+  .confirm-popup__close-button {
+    max-width: 26px;
+    max-height: 26px;
+    right: 0;
+    bottom: 5px;
+  }
+  .form__overlay.visible {
+    display: grid;
+    place-items: center;
+  }
+  .form__content {
+    max-width: 282px;
+    justify-self: center;
+  }
+  .form__title {
+   font-family: Inter;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0;
+  }
+  .form__item {
+    max-width: 238px;
+  }
+  .form__item::placeholder {
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0;
+  }
+
+  .form__button-submit {
+    max-width: 238px;
+    max-height: 46px;
+    font-family: Inter;
+  }
+
+  .form__close-button {
+    max-width: 26px;
+    max-height: 26px;
+    right: 0;
+    bottom: 5px;
+  }
+  .form__close-icon {
+    max-width: 26px;
+    max-height: 26px;
+  }
+}

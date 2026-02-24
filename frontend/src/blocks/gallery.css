@@ -1,0 +1,150 @@
+.cards__list {
+  max-width: 880px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(282px, auto));
+  column-gap: 17px;
+  row-gap: 20px;
+  margin: 0 auto;
+  justify-content: center;
+  padding: 0;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 282px;
+  max-height: 361px;
+
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+.card__image {
+  width: 100%;
+  height: 282px;
+  object-fit: cover;
+}
+
+.card__description{
+  display: flex;
+  align-items: center;
+}
+
+.card__title {
+  margin-left: 21px;
+  font-family: Inter, sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.card__like-button{
+  max-width: 26px;
+  margin: 0 15px 0 auto;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 2;
+ 
+}
+
+
+
+.card__icon:focus {
+  background-image: url("images/lago_braies.png");
+}
+.card__icon {
+  max-width: 21px;
+  max-height: 19px;
+  margin: 0;
+}
+
+.card__delete-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+
+}
+
+.card__trash-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.card__trash-icon:hover {
+  opacity: 60%;
+  cursor: pointer;
+}
+
+/* Tablet e abaixo */
+@media screen and (max-width: 800px) {
+  .gallery {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    padding-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* 2 colunas fluidas quando couber */
+  .gallery__content {
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Celular: vira lista (1 coluna) */
+@media screen and (max-width: 630px) {
+  .gallery {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cards__list {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* se .gallery__content for o grid dos cards, garanta também */
+  .gallery__content {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* Celular bem pequeno */
+@media screen and (max-width: 320px) {
+  .gallery {
+    padding-top: 19px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

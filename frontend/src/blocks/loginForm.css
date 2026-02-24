@@ -1,0 +1,39 @@
+.form__fieldset {
+  display: flex;
+  flex-direction: column;
+  max-width: 358px;
+  min-width: 358px;
+  width: 100%;
+  margin: 0 auto;
+  border: 0;
+  padding: 0;
+}
+
+.form__input {
+  margin-bottom: 30px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid white;
+}
+.form__input:focus {
+  outline:none;
+   box-shadow: none;
+}
+
+
+.button__submit_login {
+  margin-top: 216px;
+  background-color: white;
+  height: 54px;
+  width: 100%;
+}
+
+@media screen and (max-width: 544px) {
+  .form_sign {
+    width: 260px;
+  }
+
+  .form__button_sign {
+    margin-top: 187px;
+  }
+}
