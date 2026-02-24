@@ -1,5 +1,7 @@
 require('dotenv').config();
 console.log("MONGO_URI =", process.env.MONGO_URI);
+console.log("RAW:", JSON.stringify(process.env.MONGO_URI));
+console.log("PREFIXO:", process.env.MONGO_URI?.slice(0, 20));
 const path = require("path");
 const express = require('express');
 
