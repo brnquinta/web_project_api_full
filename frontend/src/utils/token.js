@@ -1,4 +1,4 @@
-const TOKEN_KEY = "token"; 
+const TOKEN_KEY = "token"; // use a mesma chave do App
 
 export const setToken = (token) => {
   localStorage.setItem(TOKEN_KEY, token);

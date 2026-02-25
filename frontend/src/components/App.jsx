@@ -1,7 +1,6 @@
 //import env
 const baseUrl = import.meta.env.VITE_API_URL;
 
-
 // estilos globais
 import "../index.css";
 
@@ -35,9 +34,13 @@ import signupSucesso from "./../images/signupSucesso.png";
 import signupFail from "./../images/signupFail.png";
 
 // utilitários
-import { getToken, setToken as setTokenUtil } from "../utils/token.js";
+import {
+  getToken,
+  setToken as setTokenUtil,
+  removeToken,
+} from "../utils/token.js"; // MUDOU: importei removeToken também
 
-import Popup from "./main/components/popup/Popup.jsx"; 
+import Popup from "./main/components/popup/Popup.jsx";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -45,18 +48,13 @@ function App() {
   const [popup, setPopup] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [token, setToken] = useState(() => getToken()); // MUDOU: padronizei para ler pelo util getToken()
   const navigate = useNavigate();
 
-
-useEffect(()=> {
-  if (token) localStorage.setItem("token", token)
-    else localStorage.removeItem("token");
-
-}, [token])
-
-
-
+  useEffect(() => {
+    if (token) setTokenUtil(token);
+    else removeToken();
+  }, [token]); // MUDOU: padronizei salvar/remover token usando os utils
 
   useEffect(() => {
     const jwt = getToken();
@@ -71,12 +69,11 @@ useEffect(()=> {
         const email = res?.data?.email ?? res?.email ?? "";
 
         setIsLoggedIn(true);
-
         setToken(jwt);
 
         return api.getUserInfo().then((userData) => {
           setCurrentUser({
-             ...(userData?.data ?? userData),
+            ...(userData?.data ?? userData),
             email,
           });
         });
@@ -84,7 +81,7 @@ useEffect(()=> {
       .catch((err) => {
         console.error(err);
         setIsLoggedIn(false);
-        localStorage.removeItem("token");
+        removeToken(); // MUDOU: usar removeToken() em vez de localStorage.removeItem("token")
         setToken(null);
       })
       .finally(() => setIsCheckingAuth(false));
@@ -127,27 +124,28 @@ useEffect(()=> {
       .catch((err) => console.error(err));
   }
 
-function handleCardLike(card) {
-  const isLiked = Array.isArray(card.likes)
-    && card.likes.some((like) =>
-      (typeof like === "string" ? like : like?._id) === currentUser._id
-    );
-
-      console.log("isLiked calculado:", isLiked);
-
-
-  api
-    .changeLikeCardStatus(card._id, isLiked)
-    .then((newCard) => {
-      console.log("RESPOSTA DO LIKE:", newCard);
-      setCards((state) =>
-        state.map((currentCard) =>
-          currentCard._id === card._id ? newCard : currentCard
-        )
+  function handleCardLike(card) {
+    const isLiked =
+      Array.isArray(card.likes) &&
+      card.likes.some(
+        (like) =>
+          (typeof like === "string" ? like : like?._id) === currentUser._id
       );
-    })
-    .catch((error) => console.error(error));
-}
+
+    console.log("isLiked calculado:", isLiked);
+
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        console.log("RESPOSTA DO LIKE:", newCard);
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  }
 
   function handleCardDelete(card) {
     api
@@ -161,8 +159,8 @@ function handleCardLike(card) {
   }
 
   function signOut() {
-    localStorage.removeItem("token");
-    setToken(null); 
+    removeToken(); // MUDOU: usar removeToken() em vez de localStorage.removeItem("token")
+    setToken(null);
     setIsLoggedIn(false);
     setCurrentUser({});
     navigate("/signin");
@@ -178,7 +176,7 @@ function handleCardLike(card) {
       .register({ email, password })
       .then(() => {
         setPopup({
-          title: "", // ✅ MUDOU: agora popup é OBJETO (igual o Main espera)
+          title: "",
           children: (
             <InfoTooltip
               icon={signupSucesso}
@@ -190,7 +188,7 @@ function handleCardLike(card) {
       })
       .catch((err) => {
         setPopup({
-          title: "", // ✅ MUDOU: agora popup é OBJETO (igual o Main espera)
+          title: "",
           children: (
             <InfoTooltip
               icon={signupFail}
@@ -205,22 +203,21 @@ function handleCardLike(card) {
   const handleLogin = ({ email, password }) => {
     auth
       .login({ email, password })
-   
       .then((response) => {
-const token = response.token ?? response.jwt ?? response.data?.token ?? response.data?.jwt;
+        const token =
+          response.token ?? response.jwt ?? response.data?.token ?? response.data?.jwt;
 
-  setToken(token);
-  localStorage.setItem("token", token);
-  setIsLoggedIn(true);
+        setToken(token); // MUDOU: setToken() já salva via useEffect (setTokenUtil)
+        setIsLoggedIn(true);
 
-  return api.getUserInfo().then((userData) => {
-    setCurrentUser({ ...(userData?.data ?? userData), email });
-    navigate("/");
-  });
-})
+        return api.getUserInfo().then((userData) => {
+          setCurrentUser({ ...(userData?.data ?? userData), email });
+          navigate("/");
+        });
+      })
       .catch((err) => {
         setPopup({
-          title: "", // ✅ MUDOU: agora popup é OBJETO (igual o Main espera)
+          title: "",
           children: <InfoTooltip icon={signupFail} message="Erro ao logar!" />,
         });
         console.error(err);
@@ -264,16 +261,16 @@ const token = response.token ?? response.jwt ?? response.data?.token ?? response
           />
           <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
         </Routes>
-      
-{popup && (
-  <Popup
-    title={popup.title}
-    onClose={handleClosePopup}
-    isImagePopup={popup.isImagePopup}
-  >
-    {popup.children}
-  </Popup>
-)}
+
+        {popup && (
+          <Popup
+            title={popup.title}
+            onClose={handleClosePopup}
+            isImagePopup={popup.isImagePopup}
+          >
+            {popup.children}
+          </Popup>
+        )}
 
         <Footer />
       </div>
