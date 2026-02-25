@@ -38,8 +38,7 @@ import {
   getToken,
   setToken as setTokenUtil,
   removeToken,
-} from "../utils/token.js"; // MUDOU: importei removeToken também
-
+} from "../utils/token.js"; 
 import Popup from "./main/components/popup/Popup.jsx";
 
 function App() {
@@ -48,7 +47,7 @@ function App() {
   const [popup, setPopup] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [token, setToken] = useState(() => getToken()); // MUDOU: padronizei para ler pelo util getToken()
+  const [token, setToken] = useState(() => getToken()); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -200,29 +199,33 @@ function App() {
       });
   }
 
-  const handleLogin = ({ email, password }) => {
-    auth
-      .login({ email, password })
-      .then((response) => {
-        const token =
-          response.token ?? response.jwt ?? response.data?.token ?? response.data?.jwt;
+const handleLogin = ({ email, password }) => {
+  auth
+    .login({ email, password })
+    .then((response) => {
+      const token =
+        response.token ??
+        response.jwt ??
+        response.data?.token ??
+        response.data?.jwt;
 
-        setToken(token); 
-        setIsLoggedIn(true);
+      setTokenUtil(token); 
+      setToken(token);
+      setIsLoggedIn(true);
 
-        return api.getUserInfo().then((userData) => {
-          setCurrentUser({ ...(userData?.data ?? userData), email });
-          navigate("/");
-        });
-      })
-      .catch((err) => {
-        setPopup({
-          title: "",
-          children: <InfoTooltip icon={signupFail} message="Erro ao logar!" />,
-        });
-        console.error(err);
+      return api.getUserInfo().then((userData) => {
+        setCurrentUser({ ...(userData?.data ?? userData), email });
+        navigate("/");
       });
-  };
+    })
+    .catch((err) => {
+      setPopup({
+        title: "",
+        children: <InfoTooltip icon={signupFail} message="Erro ao logar!" />,
+      });
+      console.error(err);
+    });
+};
 
   return (
     <CurrentUserContext.Provider
