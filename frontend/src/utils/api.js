@@ -1,3 +1,5 @@
+import { getToken } from "./token.js"; // MUDOU: usar util padronizado
+
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -8,9 +10,8 @@ class Api {
     return result.ok ? result.json() : Promise.reject(`Error: ${result.status}`);
   }
 
-  // ✅ NOVO: monta headers SEMPRE com token, se existir
   _getHeaders() {
-    const token = localStorage.getItem("token");
+    const token = getToken(); // MUDOU: antes era localStorage.getItem("token")
     return {
       ...this._headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
