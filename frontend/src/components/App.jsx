@@ -139,6 +139,7 @@ function handleCardLike(card) {
   api
     .changeLikeCardStatus(card._id, isLiked)
     .then((newCard) => {
+      console.log("RESPOSTA DO LIKE:", newCard);
       setCards((state) =>
         state.map((currentCard) =>
           currentCard._id === card._id ? newCard : currentCard
