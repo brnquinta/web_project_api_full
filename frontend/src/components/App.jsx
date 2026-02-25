@@ -131,7 +131,7 @@ function App() {
           (typeof like === "string" ? like : like?._id) === currentUser._id
       );
 
-    console.log("isLiked calculado:", isLiked);
+   
 
     api
       .changeLikeCardStatus(card._id, shouldLike) 
