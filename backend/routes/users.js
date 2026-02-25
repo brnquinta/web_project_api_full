@@ -1,6 +1,9 @@
+const { 
+  validateUserId, 
+  validateUpdateUser,
+  validateUpdateAvatar 
+} = require('../middlewares/validator.js');
 
-
-const {validateSignup, validateLogin} = require('../middlewares/validator.js')
 const router = require('express').Router();
 
 const {
@@ -15,13 +18,13 @@ const {
 router.get('/me', getCurrentUser);
 
 // Atualizações do usuário atual
-router.patch('/me', updateUser);
-router.patch('/me/avatar', updateUserAvatar);
+router.patch('/me', validateUpdateUser, updateUser);
+router.patch('/me/avatar', validateUpdateAvatar, updateUserAvatar);
 
 // Lista geral de usuários
 router.get('/', getUsers);
 
 // Rota dinâmica por ID
-router.get('/:id', getUserById);
+router.get('/:id', validateUserId, getUserById);
 
 module.exports = router;

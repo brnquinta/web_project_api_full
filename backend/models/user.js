@@ -6,15 +6,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
-    default: 'Jacques Cousteau'
+    maxlength: 30
+ 
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
-    default: 'Explorer'
+    maxlength: 30
+
   },
   avatar: {
     type: String,

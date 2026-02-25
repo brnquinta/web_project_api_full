@@ -24,6 +24,13 @@ app.use(express.json());
 /* registro de log */
 app.use(requestLogger);
 
+/* crash-test */
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("O servidor travará agora");
+  }, 0);
+});
+
 /* CORS */
 const allowedOrigins = [
   "http://localhost:3000",
@@ -63,8 +70,6 @@ app.use(auth);
 app.use("/users", usersRouter);
 app.use("/cards", cardsRouter);
 
-/* build FrontEnd (se você servir o front pelo backend; se não, pode remover) */
-app.use(express.static(path.join(__dirname, "..", "frontend")));
 
 /* 404 */
 app.use((req, res, next) => {
@@ -74,8 +79,8 @@ app.use((req, res, next) => {
 });
 
 /* Validadores / erros */
-app.use(errors());
 app.use(errorLogger);
+app.use(errors());
 app.use(errorMiddleware);
 
 /* Start */
