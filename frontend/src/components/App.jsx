@@ -127,20 +127,26 @@ useEffect(()=> {
       .catch((err) => console.error(err));
   }
 
-  function handleCardLike(card) {
-    const isLiked = card.isLiked;
+function handleCardLike(card) {
+  const isLiked = Array.isArray(card.likes)
+    && card.likes.some((like) =>
+      (typeof like === "string" ? like : like?._id) === currentUser._id
+    );
 
-    api
-      .changeLikeCardStatus(card._id, isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard
-          )
-        );
-      })
-      .catch((error) => console.error(error));
-  }
+      console.log("isLiked calculado:", isLiked);
+
+
+  api
+    .changeLikeCardStatus(card._id, isLiked)
+    .then((newCard) => {
+      setCards((state) =>
+        state.map((currentCard) =>
+          currentCard._id === card._id ? newCard : currentCard
+        )
+      );
+    })
+    .catch((error) => console.error(error));
+}
 
   function handleCardDelete(card) {
     api
