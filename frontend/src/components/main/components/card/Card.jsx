@@ -3,15 +3,20 @@ import likeIconActive from "../../../../images/heart_icon_black.png";
 import deleteIcon from "../../../../images/deleteIcon.svg";
 
 export default function Card(props) {
-  const { name, link, likes } = props.card;
+  const { name, link, likes, owner } = props.card; 
+  // MUDOU: adicionei owner
 
   const { handleCardLike, handleCardDelete, onCardClick, currentUserId } = props;
 
-
   const isLiked =
     Array.isArray(likes) &&
-    likes.some((like) => (typeof like === "string" ? like : like?._id) === currentUserId);
+    likes.some((like) =>
+      (typeof like === "string" ? like : like?._id) === currentUserId
+    );
 
+  const isOwn =
+    (typeof owner === "string" ? owner : owner?._id) === currentUserId;
+  // MUDOU: verifica se o usuário logado é o dono do card
 
   const cardLikeButtonClassName = `card__like-button ${
     isLiked ? "card__like-button_is-active" : ""
@@ -26,18 +31,21 @@ export default function Card(props) {
         onClick={() => onCardClick(props.card)}
       />
 
-      <button
-        aria-label="Delete card"
-        className="card__delete-button"
-        type="button"
-        onClick={() => handleCardDelete(props.card)}
-      >
-        <img
-          src={deleteIcon}
-          alt="Ícone de lixeira"
-          className="card__trash-icon"
-        />
-      </button>
+      {isOwn && ( 
+    
+        <button
+          aria-label="Delete card"
+          className="card__delete-button"
+          type="button"
+          onClick={() => handleCardDelete(props.card)}
+        >
+          <img
+            src={deleteIcon}
+            alt="Ícone de lixeira"
+            className="card__trash-icon"
+          />
+        </button>
+      )}
 
       <div className="card__description">
         <h2 className="card__title">{name}</h2>
