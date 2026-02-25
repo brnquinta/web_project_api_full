@@ -7,7 +7,6 @@ function ProtectedRoute({ children }) {
   const { isLoggedIn, isCheckingAuth } = useContext(CurrentUserContext);
 
 if (isCheckingAuth) {
-  console.log("isCheckingAuth:", isCheckingAuth);
   return null; 
 }
 

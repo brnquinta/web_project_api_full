@@ -45,8 +45,8 @@ export default function SignForm(props) {
           onChange={handleChange}
           required
         />
-        {/* ERRO SEMÂNTICO: classe diz "password" mas é erro do email */}
-        <span className="password-input-error form__input-error"></span>
+     
+        <span className="email-input-error form__input-error"></span>
 
         <input
           type="password"
