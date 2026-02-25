@@ -54,7 +54,7 @@ function App() {
   useEffect(() => {
     if (token) setTokenUtil(token);
     else removeToken();
-  }, [token]); // MUDOU: padronizei salvar/remover token usando os utils
+  }, [token]); 
 
   useEffect(() => {
     const jwt = getToken();
@@ -81,7 +81,7 @@ function App() {
       .catch((err) => {
         console.error(err);
         setIsLoggedIn(false);
-        removeToken(); // MUDOU: usar removeToken() em vez de localStorage.removeItem("token")
+        removeToken(); 
         setToken(null);
       })
       .finally(() => setIsCheckingAuth(false));
@@ -159,7 +159,7 @@ function App() {
   }
 
   function signOut() {
-    removeToken(); // MUDOU: usar removeToken() em vez de localStorage.removeItem("token")
+    removeToken();
     setToken(null);
     setIsLoggedIn(false);
     setCurrentUser({});
@@ -207,7 +207,7 @@ function App() {
         const token =
           response.token ?? response.jwt ?? response.data?.token ?? response.data?.jwt;
 
-        setToken(token); // MUDOU: setToken() já salva via useEffect (setTokenUtil)
+        setToken(token); 
         setIsLoggedIn(true);
 
         return api.getUserInfo().then((userData) => {

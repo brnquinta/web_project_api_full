@@ -18,7 +18,7 @@ module.exports.createCard = async (req, res) => {
     const card = await Card.create({
       name,
       link,
-      owner: req.user._id, // 🔹 MUDANÇA: owner vem do middleware
+      owner: req.user._id, 
     });
 
     res.status(201).send(card);
@@ -37,7 +37,7 @@ module.exports.likeCard = async (req, res) => {
   try {
     const card = await Card.findByIdAndUpdate(
       req.params.cardId,
-      { $addToSet: { likes: req.user._id } }, //  adiciona like sem duplicar
+      { $addToSet: { likes: req.user._id } },
       { new: true }
     ).orFail(); 
 
@@ -60,7 +60,7 @@ module.exports.deleteCard = async (req, res) => {
 
   try {
     const card = await Card.findById(req.params.cardId)
-      .orFail(); // 🔹 MUDANÇA: orFail garante 404 se não existir
+      .orFail(); 
 
 
       

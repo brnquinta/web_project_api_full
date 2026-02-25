@@ -4,8 +4,7 @@ import deleteIcon from "../../../../images/deleteIcon.svg";
 
 export default function Card(props) {
   const { name, link, likes, owner } = props.card; 
-  // MUDOU: adicionei owner
-
+ 
   const { handleCardLike, handleCardDelete, onCardClick, currentUserId } = props;
 
   const isLiked =
@@ -16,7 +15,7 @@ export default function Card(props) {
 
   const isOwn =
     (typeof owner === "string" ? owner : owner?._id) === currentUserId;
-  // MUDOU: verifica se o usuário logado é o dono do card
+
 
   const cardLikeButtonClassName = `card__like-button ${
     isLiked ? "card__like-button_is-active" : ""

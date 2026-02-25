@@ -24,7 +24,7 @@ app.use(express.json());
 /* registro de log */
 app.use(requestLogger);
 
-/* CORS (antes das rotas e antes do auth) */
+/* CORS */
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
@@ -40,7 +40,7 @@ app.use(
   })
 );
 
-/* Preflight global (sem app.options wildcard) */
+/* Preflight global */
 app.use((req, res, next) => {
   if (req.method === "OPTIONS") {
     return res.sendStatus(204);
