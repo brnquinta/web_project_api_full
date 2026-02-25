@@ -86,6 +86,25 @@ function App() {
       .finally(() => setIsCheckingAuth(false));
   }, []);
 
+
+useEffect(() => {
+  if (!isLoggedIn) return;
+
+  setIsLoading(true);
+
+  Promise.all([api.getCardList(), api.getUserInfo()])
+    .then(([cardsData, userData]) => {
+      setCards(cardsData);
+      setCurrentUser(userData);
+    })
+    .catch((err) => console.error(err))
+    .finally(() => setIsLoading(false));
+}, [isLoggedIn]);
+
+
+
+
+
   useEffect(() => {
     api
       .getCardList()
@@ -97,7 +116,7 @@ function App() {
     return api
       .addCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards((prev) => [newCard, ...prev]); 
         handleClosePopup();
       })
       .catch((err) => console.error(err));
