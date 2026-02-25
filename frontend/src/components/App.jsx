@@ -200,7 +200,7 @@ useEffect(()=> {
       .login({ email, password })
    
       .then((response) => {
-  const token = response.token ?? response.data?.token;
+const token = response.token ?? response.jwt ?? response.data?.token ?? response.data?.jwt;
 
   setToken(token);
   localStorage.setItem("token", token);
