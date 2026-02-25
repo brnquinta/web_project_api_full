@@ -9,40 +9,34 @@ import ImagePopup from "./components/popup/imagePopup/ImagePopup.jsx";
 import Card from "./components/card/Card.jsx";
 import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
-const Main = ({ 
-  cards, 
-  onCardLike, 
-  onCardDelete, 
-  onOpenPopup, 
-  onClosePopup 
+const Main = ({
+  cards,
+  onCardLike,
+  onCardDelete,
+  onOpenPopup,
+  onClosePopup,
 }) => {
-
   const { currentUser } = useContext(CurrentUserContext);
 
-  // Popup do Editar Perfil
-  const editProfilePopup = { 
-    title: "Editar Perfil", 
-    children: <EditProfilePopup /> 
+  const editProfilePopup = {
+    title: "Editar Perfil",
+    children: <EditProfilePopup />,
   };
 
-  // Popup de Novo Card
   const newCardPopup = {
     title: "Novo local",
-    children: <NewCardPopup /> 
+    children: <NewCardPopup />,
   };
 
- // Popup de Editar Avatar
-const editAvatarPopup = {
-  title: "Alterar a foto de perfil",
-  children: <EditAvatarPopup />
-};
+  const editAvatarPopup = {
+    title: "Alterar a foto de perfil",
+    children: <EditAvatarPopup />,
+  };
 
-
-  // Popup de Imagem ao clicar no card
   const handleCardClick = (card) => {
     const imagePopup = {
       isImagePopup: true,
-      children: <ImagePopup card={card} onClose={onClosePopup} />
+      children: <ImagePopup card={card} onClose={onClosePopup} />,
     };
 
     onOpenPopup(imagePopup);
@@ -68,35 +62,30 @@ const editAvatarPopup = {
 
           <div className="profile__info">
             <div className="profile__button-content">
-
               <div className="profile__wrapper">
-              <h1 className="profile__name">{currentUser.name}</h1>
+                <h1 className="profile__name">{currentUser.name}</h1>
 
-              <button
-                className="profile__button-edit"
-                onClick={() => onOpenPopup(editProfilePopup)}
-              >
-                <img
-                  className="profile__button-edit-icon"
-                  src={barraIcon}
-                  alt="icone barra"
-                />
-              </button>
+                <button
+                  className="profile__button-edit"
+                  onClick={() => onOpenPopup(editProfilePopup)}
+                >
+                  <img
+                    className="profile__button-edit-icon"
+                    src={barraIcon}
+                    alt="icone barra"
+                  />
+                </button>
               </div>
             </div>
 
             <h2 className="profile__profession">{currentUser.about}</h2>
           </div>
 
-          <button 
+          <button
             className="profile__button-add"
             onClick={() => onOpenPopup(newCardPopup)}
           >
-            <img
-              className="profile__add-icon"
-              src={plusIcon}
-              alt="icone adição"
-            />
+            <img className="profile__add-icon" src={plusIcon} alt="icone adição" />
           </button>
         </div>
       </div>
@@ -104,18 +93,18 @@ const editAvatarPopup = {
       {/* Lista de Cards */}
       <ul className="cards__list">
         {cards.map((card) => (
-          <Card 
-            key={card._id} 
-            card={card}  
-            onCardClick={handleCardClick} 
-            handleCardLike={onCardLike} 
-            handleCardDelete={onCardDelete} 
+          <Card
+            key={card._id}
+            card={card}
+            currentUserId={currentUser._id} // CORREÇÃO: passar o id do usuário logado para o Card calcular isLiked via likes[]
+            onCardClick={handleCardClick}
+            handleCardLike={onCardLike}
+            handleCardDelete={onCardDelete}
           />
         ))}
       </ul>
-
     </>
   );
-}
+};
 
 export default Main;
