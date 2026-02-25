@@ -1,5 +1,3 @@
-
-
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -7,20 +5,27 @@ class Api {
   }
 
   _handleServerResponse(result) {
-    return result.ok
-      ? result.json()
-      : Promise.reject(`Error: ${result.status}`);
+    return result.ok ? result.json() : Promise.reject(`Error: ${result.status}`);
+  }
+
+  // ✅ NOVO: monta headers SEMPRE com token, se existir
+  _getHeaders() {
+    const token = localStorage.getItem("token");
+    return {
+      ...this._headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
   }
 
   getCardList() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
+      headers: this._getHeaders(),
     }).then(this._handleServerResponse);
   }
 
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
+      headers: this._getHeaders(),
     }).then((result) => this._handleServerResponse(result));
   }
 
@@ -31,7 +36,7 @@ class Api {
   editProfileinfo(name, about) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({ name, about }),
     }).then((result) => this._handleServerResponse(result));
   }
@@ -39,7 +44,7 @@ class Api {
   addCard(card) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({
         name: card.name,
         link: card.link,
@@ -51,27 +56,25 @@ class Api {
     const method = isLiked ? "DELETE" : "PUT";
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method,
-      headers: this._headers,
+      headers: this._getHeaders(),
     }).then((result) => this._handleServerResponse(result));
   }
 
   removeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: this._getHeaders(),
     }).then((result) => this._handleServerResponse(result));
   }
 
   editProfileAvatar(avatarLink) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this._getHeaders(),
       body: JSON.stringify({ avatar: avatarLink }),
     }).then((result) => this._handleServerResponse(result));
   }
 }
-
-console.log("API URL:", import.meta.env.VITE_API_URL);
 
 const api = new Api({
   baseUrl: import.meta.env.VITE_API_URL,
