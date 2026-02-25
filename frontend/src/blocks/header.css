@@ -8,9 +8,10 @@
   margin: 0 auto 40px auto;
   padding: 45px 16px 41px;
   display: flex;
-  align-items: center;            /* 🔥 centraliza verticalmente */
+  align-items: center;
   border-bottom: 1px solid #545454;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Logo */
@@ -19,15 +20,15 @@
   display: block;
 }
 
-/* Área direita do header (serve para div e ul) */
+/* Área direita do header */
 .header__nav {
-  margin-left: auto;              /* 🔥 empurra para o canto direito */
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 24px;
 }
 
-/* Quando for UL, tira estilos padrão */
+/* Quando for UL */
 .header__nav_list {
   list-style: none;
   padding: 0;
@@ -40,6 +41,7 @@
   color: #fff;
   font-size: 18px;
   line-height: 22px;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Links */
@@ -48,6 +50,7 @@
   text-decoration: none;
   font-size: 18px;
   line-height: 22px;
+  font-family: 'Inter', sans-serif;
 }
 
 .header__link_signout {
