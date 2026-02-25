@@ -134,7 +134,7 @@ function App() {
     console.log("isLiked calculado:", isLiked);
 
     api
-      .changeLikeCardStatus(card._id, isLiked)
+      .changeLikeCardStatus(card._id, shouldLike) 
       .then((newCard) => {
         console.log("RESPOSTA DO LIKE:", newCard);
         setCards((state) =>

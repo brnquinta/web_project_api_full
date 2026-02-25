@@ -96,7 +96,7 @@ const Main = ({
           <Card
             key={card._id}
             card={card}
-            currentUserId={currentUser._id} // CORREÇÃO: passar o id do usuário logado para o Card calcular isLiked via likes[]
+            currentUserId={currentUser._id} //  id do usuário logado para o Card calcular isLiked via likes[]
             onCardClick={handleCardClick}
             handleCardLike={onCardLike}
             handleCardDelete={onCardDelete}

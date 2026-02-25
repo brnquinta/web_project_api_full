@@ -1,5 +1,6 @@
-import { getToken } from "./token.js"; // MUDOU: usar util padronizado
+// utils/api.js
 
+import { getToken } from "./token.js"; 
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -11,7 +12,7 @@ class Api {
   }
 
   _getHeaders() {
-    const token = getToken(); // MUDOU: antes era localStorage.getItem("token")
+    const token = getToken(); 
     return {
       ...this._headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -53,8 +54,8 @@ class Api {
     }).then((result) => this._handleServerResponse(result));
   }
 
-  changeLikeCardStatus(cardId, isLiked) {
-    const method = isLiked ? "DELETE" : "PUT";
+  changeLikeCardStatus(cardId, shouldLike) {
+    const method = shouldLike ? "PUT" : "DELETE"; 
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method,
       headers: this._getHeaders(),

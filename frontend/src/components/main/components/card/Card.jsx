@@ -1,10 +1,12 @@
+// Card.jsx
+
 import likeIcon from "../../../../images/heart_icon.png";
 import likeIconActive from "../../../../images/heart_icon_black.png";
 import deleteIcon from "../../../../images/deleteIcon.svg";
 
 export default function Card(props) {
-  const { name, link, likes, owner } = props.card; 
- 
+  const { name, link, likes, owner } = props.card;
+
   const { handleCardLike, handleCardDelete, onCardClick, currentUserId } = props;
 
   const isLiked =
@@ -15,7 +17,6 @@ export default function Card(props) {
 
   const isOwn =
     (typeof owner === "string" ? owner : owner?._id) === currentUserId;
-
 
   const cardLikeButtonClassName = `card__like-button ${
     isLiked ? "card__like-button_is-active" : ""
@@ -30,8 +31,7 @@ export default function Card(props) {
         onClick={() => onCardClick(props.card)}
       />
 
-      {isOwn && ( 
-    
+      {isOwn && (
         <button
           aria-label="Delete card"
           className="card__delete-button"
@@ -53,7 +53,7 @@ export default function Card(props) {
           aria-label="Like card"
           type="button"
           className={cardLikeButtonClassName}
-          onClick={() => handleCardLike(props.card)}
+          onClick={() => handleCardLike(props.card, !isLiked)} // ToogleLike
         >
           <img
             src={isLiked ? likeIconActive : likeIcon}
