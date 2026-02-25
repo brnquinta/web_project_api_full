@@ -15,6 +15,7 @@ const Main = ({
   onCardDelete,
   onOpenPopup,
   onClosePopup,
+  isLoading
 }) => {
   const { currentUser } = useContext(CurrentUserContext);
 
@@ -91,18 +92,22 @@ const Main = ({
       </div>
 
       {/* Lista de Cards */}
-      <ul className="cards__list">
-        {cards.map((card) => (
-          <Card
-            key={card._id}
-            card={card}
-            currentUserId={currentUser._id} //  id do usuário logado para o Card calcular isLiked via likes[]
-            onCardClick={handleCardClick}
-            handleCardLike={onCardLike}
-            handleCardDelete={onCardDelete}
-          />
-        ))}
-      </ul>
+{isLoading ? (
+  <div className="cards__loading">Carregando...</div>
+) : (
+  <ul className="cards__list">
+    {cards.map((card) => (
+      <Card
+        key={card._id}
+        card={card}
+        currentUserId={currentUser._id}
+        onCardClick={handleCardClick}
+        handleCardLike={onCardLike}
+        handleCardDelete={onCardDelete}
+      />
+    ))}
+  </ul>
+)}
     </>
   );
 };
