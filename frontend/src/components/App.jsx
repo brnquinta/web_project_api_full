@@ -38,25 +38,33 @@ import {
   getToken,
   setToken as setTokenUtil,
   removeToken,
-} from "../utils/token.js"; 
+} from "../utils/token.js";
+
 import Popup from "./main/components/popup/Popup.jsx";
 
 function App() {
   const [cards, setCards] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [token, setToken] = useState(() => getToken()); 
+
+  const [isLoading, setIsLoading] = useState(false); // ✅ AGORA EXISTE
+  const [token, setToken] = useState(() => getToken());
+
   const navigate = useNavigate();
 
+  // ✅ sempre que token mudar, sincroniza no localStorage via utils
   useEffect(() => {
     if (token) setTokenUtil(token);
     else removeToken();
-  }, [token]); 
+  }, [token]);
 
+  // ✅ 1) Checa token ao abrir o app (auto-login)
   useEffect(() => {
     const jwt = getToken();
+
     if (!jwt) {
       setIsCheckingAuth(false);
       return;
@@ -70,6 +78,7 @@ function App() {
         setIsLoggedIn(true);
         setToken(jwt);
 
+        // opcional: já seta email se quiser
         return api.getUserInfo().then((userData) => {
           setCurrentUser({
             ...(userData?.data ?? userData),
@@ -80,82 +89,73 @@ function App() {
       .catch((err) => {
         console.error(err);
         setIsLoggedIn(false);
-        removeToken(); 
+        removeToken();
         setToken(null);
       })
       .finally(() => setIsCheckingAuth(false));
   }, []);
 
-
-useEffect(() => {
-  if (!isLoggedIn) return;
-
-  setIsLoading(true);
-
-  Promise.all([api.getCardList(), api.getUserInfo()])
-    .then(([cardsData, userData]) => {
-      setCards(cardsData);
-      setCurrentUser(userData);
-    })
-    .catch((err) => console.error(err))
-    .finally(() => setIsLoading(false));
-}, [isLoggedIn]);
-
-
-
-
-
+  // ✅ 2) Quando logar, carrega dados (cards + user) UMA vez
   useEffect(() => {
-    api
-      .getCardList()
-      .then((cardsData) => setCards(cardsData))
-      .catch((err) => console.error(err));
-  }, []);
+    if (!isLoggedIn) return;
+
+    setIsLoading(true);
+
+    Promise.all([api.getCardList(), api.getUserInfo()])
+      .then(([cardsData, userData]) => {
+        setCards(cardsData);
+        setCurrentUser(userData?.data ?? userData);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setIsLoading(false));
+  }, [isLoggedIn]);
+
+  // Popups
+  const handleOpenPopup = (popupData) => setPopup(popupData);
+  const handleClosePopup = () => setPopup(null);
 
   function handleAddPlaceSubmit(data) {
     return api
       .addCard(data)
       .then((newCard) => {
-        setCards((prev) => [newCard, ...prev]); 
+        setCards((prev) => [newCard, ...prev]);
         handleClosePopup();
       })
       .catch((err) => console.error(err));
   }
 
   function handleEditProfileSubmit(data) {
-    api
+    return api
       .editProfileinfo(data.name, data.about)
       .then((updated) => {
-        setCurrentUser(updated);
+        setCurrentUser(updated?.data ?? updated);
         handleClosePopup();
       })
       .catch((err) => console.error(err));
   }
 
   function handleEditAvatar(data) {
-    api
+    return api
       .editProfileAvatar(data.link)
       .then((updated) => {
-        setCurrentUser(updated);
+        setCurrentUser(updated?.data ?? updated);
         handleClosePopup();
       })
       .catch((err) => console.error(err));
   }
 
-function handleCardLike(card, shouldLike) {
-
-
-  api
-    .changeLikeCardStatus(card._id, shouldLike) 
-    .then((newCard) => {
-      setCards((state) =>
-        state.map((currentCard) =>
-          currentCard._id === card._id ? newCard : currentCard
-        )
-      );
-    })
-    .catch((error) => console.error(error));
-}
+  function handleCardLike(card, shouldLike) {
+    api
+      .changeLikeCardStatus(card._id, shouldLike)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((error) => console.error(error));
+  }
 
   function handleCardDelete(card) {
     api
@@ -175,10 +175,6 @@ function handleCardLike(card, shouldLike) {
     setCurrentUser({});
     navigate("/signin");
   }
-
-  // Popups
-  const handleOpenPopup = (popupData) => setPopup(popupData);
-  const handleClosePopup = () => setPopup(null);
 
   // Cadastro
   function handleRegistration({ email, password }) {
@@ -210,33 +206,36 @@ function handleCardLike(card, shouldLike) {
       });
   }
 
-const handleLogin = ({ email, password }) => {
-  auth
-    .login({ email, password })
-    .then((response) => {
-      const token =
-        response.token ??
-        response.jwt ??
-        response.data?.token ??
-        response.data?.jwt;
+  // Login
+  const handleLogin = ({ email, password }) => {
+    auth
+      .login({ email, password })
+      .then((response) => {
+        const newToken =
+          response.token ??
+          response.jwt ??
+          response.data?.token ??
+          response.data?.jwt;
 
-      setTokenUtil(token); 
-      setToken(token);
-      setIsLoggedIn(true);
+        if (!newToken) throw new Error("Token não veio na resposta do login.");
 
-      return api.getUserInfo().then((userData) => {
-        setCurrentUser({ ...(userData?.data ?? userData), email });
-        navigate("/");
+        setTokenUtil(newToken);
+        setToken(newToken);
+        setIsLoggedIn(true);
+
+        return api.getUserInfo().then((userData) => {
+          setCurrentUser({ ...(userData?.data ?? userData), email });
+          navigate("/");
+        });
+      })
+      .catch((err) => {
+        setPopup({
+          title: "",
+          children: <InfoTooltip icon={signupFail} message="Erro ao logar!" />,
+        });
+        console.error(err);
       });
-    })
-    .catch((err) => {
-      setPopup({
-        title: "",
-        children: <InfoTooltip icon={signupFail} message="Erro ao logar!" />,
-      });
-      console.error(err);
-    });
-};
+  };
 
   return (
     <CurrentUserContext.Provider
@@ -259,6 +258,7 @@ const handleLogin = ({ email, password }) => {
             element={
               <ProtectedRoute>
                 <Main
+                  isLoading={isLoading} // ✅ agora você tem isso no Main se quiser
                   cards={cards}
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
@@ -269,10 +269,12 @@ const handleLogin = ({ email, password }) => {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/signup"
             element={<Register handleRegistration={handleRegistration} />}
           />
+
           <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
         </Routes>
 
