@@ -3,8 +3,15 @@ import likeIconActive from "../../../../images/heart_icon_black.png";
 import deleteIcon from "../../../../images/deleteIcon.svg";
 
 export default function Card(props) {
-  const { name, link, isLiked } = props.card;
-  const { handleCardLike, handleCardDelete, onCardClick } = props;
+  const { name, link, likes } = props.card;
+
+  const { handleCardLike, handleCardDelete, onCardClick, currentUserId } = props;
+
+
+  const isLiked =
+    Array.isArray(likes) &&
+    likes.some((like) => (typeof like === "string" ? like : like?._id) === currentUserId);
+
 
   const cardLikeButtonClassName = `card__like-button ${
     isLiked ? "card__like-button_is-active" : ""
@@ -12,7 +19,6 @@ export default function Card(props) {
 
   return (
     <li className="card">
-      {/* ----------- Imagem do card ----------- */}
       <img
         className="card__image"
         src={link}
@@ -20,7 +26,6 @@ export default function Card(props) {
         onClick={() => onCardClick(props.card)}
       />
 
-      {/* ----------- Botão de deletar ----------- */}
       <button
         aria-label="Delete card"
         className="card__delete-button"
@@ -34,7 +39,6 @@ export default function Card(props) {
         />
       </button>
 
-      {/* ----------- Descrição + Like ----------- */}
       <div className="card__description">
         <h2 className="card__title">{name}</h2>
 
