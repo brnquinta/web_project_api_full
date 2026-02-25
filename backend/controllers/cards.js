@@ -3,7 +3,9 @@ const Card = require('../models/card');
 // GET /cards
 module.exports.getCards = async (req, res) => {
   try {
-    const cards = await Card.find({});
+    const cards = await Card.find({})
+      .sort({ createdAt: -1 }); 
+
     res.send(cards);
   } catch (err) {
     res.status(500).send({ message: 'Erro no servidor' });
